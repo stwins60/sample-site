@@ -1,0 +1,54 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <title>Green Zone 2.0 Template</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="title" content="Green Zone 2.0 | Template by MLP Design" />
+    <meta name="author" content="MLP Design, webmasterneo" />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename = 'new.css') }}"
+      type="text/css"
+    />
+  </head>
+  <body>
+    <div id="pseudo-wrap1"></div>
+    <div id="pseudo-wrap2"></div>
+    <!-- Begin Wrapper -->
+    <div id="wrap">
+      <!--Begin Header -->
+      <div id="header">
+        <h1><a href="#" title="Green Zone">Green Zone 2.0</a></h1>
+        <p>
+          Fluid, responsive, CSS only (image-free) version of the classic free
+          template by MLP Design.
+        </p>
+      </div>
+      <!--End Header -->
+      <nav>
+        <ul id="menu">
+          <li><a class="current">Home</a></li>
+          <li><a href="{{ url_for('about') }}" title="About">About</a></li>
+          <li><a href="{{ url_for('contact') }}" title="Contact">Contact</a></li>
+          <li><a href="{{ url_for('sitemap') }}" title="Sitemap">Sitemap</a></li>
+        </ul>
+      </nav>
+      <!-- Begin Content -->
+      <div id="content">
+        <div class="post">
+            <div id="mysitemapgenerator_loadcorsdata" data-token="9efc036ab90bfc02f120e216622c3c9e" data-domain="www.mysitemapgenerator.com"></div>
+            <script src="https://www.mysitemapgenerator.com/api/embedmap.min.js"></script>
+        </div>
+      </div>
+      <!--End Content -->
+      <!--Begin Footer -->
+      <div id="footer">
+        <div class="notice">
+          &copy; Copyright <a title="Your Name and Link" href="#">Your Name</a>.
+          All rights reserved.
+        </div>
+      </div>
+      <!--End Footer -->
+    </div>
+  </body>
+</html>
