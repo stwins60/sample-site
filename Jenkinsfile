@@ -2,12 +2,22 @@ pipeline {
     agent any
 
     stages {
-        stage("Hello World") {
+        stage("Clean workspace") {
             steps {
-                sh "echo 'Hello World'"
-                sh "echo 'I love Python not snake'"
-                sh "echo 'me o mo why ti people hate python, but it is not a snake ejo.'"
+                cleanWS()
             }
         }
+        stage("Checkout") {
+            steps {
+                checkout([$class: 'GitSCM', branches: [[name: '*/dev'], [name: '*/prod']], userRemoteConfigs: [[url: 'https://github.com/stwins60/sample-site.git']]])
+            }
+        }
+        stage("Docker Build" {
+            steps {
+                script {
+                    sh "docker build -t idrisniyi94/sample-site ."
+                }
+            }
+        })
     }
 }
