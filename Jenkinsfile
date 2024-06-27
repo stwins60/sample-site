@@ -16,6 +16,7 @@ pipeline {
             steps {
                 script {
                     sh "docker build -t idrisniyi94/sample-site -f Dockerfile.dev ."
+                    sh "docker scout quickview idrisniyi94/sample-site"
                 }
             }
         }
