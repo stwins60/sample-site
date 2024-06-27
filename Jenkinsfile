@@ -15,7 +15,7 @@ pipeline {
         stage("Docker Build") {
             steps {
                 script {
-                    sh "docker build -t idrisniyi94/sample-site ."
+                    sh "docker build -t idrisniyi94/sample-site -f Dockerfile.dev ."
                 }
             }
         }
