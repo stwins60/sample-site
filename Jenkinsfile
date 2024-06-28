@@ -15,8 +15,12 @@ pipeline {
         stage("Docker Build") {
             steps {
                 script {
-                    sh "docker build -t idrisniyi94/sample-site -f Dockerfile.dev ."
-                    sh "docker scout quickview idrisniyi94/sample-site"
+                    if (env.BRANCH_NAME == 'dev') {
+                        sh "docker build -t idrisniyi94/dev-sample-site -f Dockerfile.dev ."
+                    }
+                    else if (env.BRANCH_NAME == 'prod') {
+                        sh "docker build -t idrisniyi94/prod-sample-site -f Dockerfile.prod ."
+                    }
                 }
             }
         }
