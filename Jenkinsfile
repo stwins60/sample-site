@@ -37,11 +37,13 @@ pipeline {
         }
         stage('Docker Push') {
             steps {
-                if (env.BRANCH_NAME == 'dev') {
-                    sh "docker push idrisniyi94/dev-sample-site"
-                }
-                else if (env.BRANCH_NAME == 'prod') {
-                    sh "docker push idrisniyi94/prod-sample-site"
+                script {
+                    if (env.BRANCH_NAME == 'dev') {
+                        sh "docker push idrisniyi94/dev-sample-site"
+                    }
+                    else if (env.BRANCH_NAME == 'prod') {
+                        sh "docker push idrisniyi94/prod-sample-site"
+                    }
                 }
             }
         }
