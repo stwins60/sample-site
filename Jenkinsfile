@@ -58,8 +58,8 @@ pipeline {
                         def containerName = 'dev-sample-site'
                         def imageName = "idrisniyi94/${containerName}:$env.IMAGE_TAG"
 
-                        def isRunning = sh(script: "docker ps -a | grep ${containerName}", returnStatus: true).trim()
-                        if (isRunning == 0) {
+                        def isRunning = sh(script: "docker ps -q -f name=${containerName}", returnStatus: true).trim()
+                        if (isRunning) {
                             sh "docker stop ${containerName}"
                             sh "docker rm ${containerName}"
                         }
@@ -70,8 +70,8 @@ pipeline {
                         def containerName = 'prod-sample-site'
                         def imageName = "idrisniyi94/${containerName}:$env.IMAGE_TAG"
 
-                        def isRunning = sh(script: "docker ps -a | grep ${containerName}", returnStatus: true).trim()
-                        if (isRunning == 0) {
+                        def isRunning = sh(script: "docker ps -q -f name=${containerName}", returnStatus: true).trim()
+                        if (isRunning) {
                             sh "docker stop ${containerName}"
                             sh "docker rm ${containerName}"
                         }
