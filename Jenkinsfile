@@ -52,7 +52,7 @@ pipeline {
             steps {
                 script {
                     def containerName = BRANCH_NAME == 'dev' ? 'dev-sample-site' : 'prod-sample-site'
-                    def imageName = "idrisniyi94/${containerName}"
+                    def imageName = "idrisniyi94/${containerName}:$env.IMAGE_TAG"
 
                     def isRunning = sh(script: "docker ps -q -f name=${containerName}", returnStdout: true).trim()
                     if (isRunning) {
