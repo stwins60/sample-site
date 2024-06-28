@@ -59,6 +59,11 @@ pipeline {
                         sh "docker stop ${containerName}"
                         sh "docker rm ${containerName}"
                     }
+                    def portInUse = sh(script: "docker ps --filter 'publish=8093' --format '{{.ID}}'", returnStdout: true).trim()
+                    if (portInUse) {
+                        sh "docker stop ${portInUse}"
+                        sh "docker rmi ${portInUse}"
+                    }
                     sh "docker run -d --name ${containerName} -p 8093:5000 ${imageName}"
                 }
                 echo "Application is running at http://10.0.0.43:8093"
