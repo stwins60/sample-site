@@ -3,6 +3,7 @@ pipeline {
 
     environment {
         BRANCH_NAME = "${GIT_BRANCH.split('/')[1]}"
+        DOCKERHUB_CREDENTIALS = credentials('5f8b634a-148a-4067-b996-07b4b3276fba')
     }
 
     stages {
@@ -24,6 +25,24 @@ pipeline {
                     }
                     else if (env.BRANCH_NAME == 'prod') {
                         sh "docker build -t idrisniyi94/prod-sample-site -f Dockerfile.prod ."
+                    }
+                }
+            }
+        }
+        stage('Docker Login') {
+            steps {
+                sh "echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin"
+                echo "Login Succeeded"
+            }
+        }
+        stage('Docker Push') {
+            steps {
+                script {
+                    if (env.BRANCH_NAME == 'dev') {
+                        sh "docker push idrisniyi94/dev-sample-site"
+                    }
+                    else if (env.BRANCH_NAME == 'prod') {
+                        sh "docker push idrisniyi94/prod-sample-site"
                     }
                 }
             }
