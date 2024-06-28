@@ -5,6 +5,9 @@ pipeline {
         BRANCH_NAME = "${GIT_BRANCH.split('/')[1]}"
         DOCKERHUB_CREDENTIALS = credentials('5f8b634a-148a-4067-b996-07b4b3276fba')
         IMAGE_TAG = "V.0.${env.BUILD_NUMBER}"
+        DEV_PORT = "8056"
+        PROD_PORT = "8093"
+        SERVER_IP = "10.0.0.43"
     }
 
     stages {
@@ -51,22 +54,31 @@ pipeline {
         stage('Run Container') {
             steps {
                 script {
-                    def containerName = BRANCH_NAME == 'dev' ? 'dev-sample-site' : 'prod-sample-site'
-                    def imageName = "idrisniyi94/${containerName}:$env.IMAGE_TAG"
+                    if (env.BRANCH_NAME == 'dev') {
+                        def containerName = 'dev-sample-site'
+                        def imageName = "idrisniyi94/${containerName}:$env.IMAGE_TAG"
 
-                    def isRunning = sh(script: "docker ps -q -f name=${containerName}", returnStdout: true).trim()
-                    if (isRunning) {
-                        sh "docker stop ${containerName}"
-                        sh "docker rm ${containerName}"
+                        def isRunning = sh(script: "docker ps -a | grep ${containerName}", returnStatus: true).trim()
+                        if (isRunning == 0) {
+                            sh "docker stop ${containerName}"
+                            sh "docker rm ${containerName}"
+                        }
+                        sh "docker run -d --name ${containerName} -p ${env.DEV_PORT}:5000 ${imageName}"
+                        echo "Application is running at http://$SERVER_IP:${env.DEV_PORT}"
                     }
-                    def portInUse = sh(script: "docker ps --filter 'publish=8093' --format '{{.ID}}'", returnStdout: true).trim()
-                    if (portInUse) {
-                        sh "docker stop ${portInUse}"
-                        sh "docker rm ${portInUse}"
+                    else if (env.BRANCH_NAME == 'prod') {
+                        def containerName = 'prod-sample-site'
+                        def imageName = "idrisniyi94/${containerName}:$env.IMAGE_TAG"
+
+                        def isRunning = sh(script: "docker ps -a | grep ${containerName}", returnStatus: true).trim()
+                        if (isRunning == 0) {
+                            sh "docker stop ${containerName}"
+                            sh "docker rm ${containerName}"
+                        }
+                        sh "docker run -d --name ${containerName} -p ${env.PROD_PORT}:5000 ${imageName}"
+                        echo "Application is running at http://$SERVER_IP:${env.PROD_PORT}"
                     }
-                    sh "docker run -d --name ${containerName} -p 8093:5000 ${imageName}"
                 }
-                echo "Application is running at http://10.0.0.43:8093"
             }
         }
     }
