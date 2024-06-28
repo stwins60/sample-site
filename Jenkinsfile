@@ -62,7 +62,7 @@ pipeline {
                     def portInUse = sh(script: "docker ps --filter 'publish=8093' --format '{{.ID}}'", returnStdout: true).trim()
                     if (portInUse) {
                         sh "docker stop ${portInUse}"
-                        sh "docker rmi ${portInUse}"
+                        sh "docker rm ${portInUse}"
                     }
                     sh "docker run -d --name ${containerName} -p 8093:5000 ${imageName}"
                 }
